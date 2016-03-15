@@ -5,7 +5,48 @@ background-size:cover;
 overflow:hidden;
 }
 
+.searchdiv{
+	font-family: "Eurostile-ExtendedTwo";
+    position: absolute;
+    width:200px;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+	top: 20%;
+    left: 5%;
+}
 
+
+.BackButton {
+    width: 74px;
+    height: 19px;
+    padding-top: 3px;
+    background-image: url(/Content/images/set_back-button.png);
+    background-position: -75px 0;
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+	margin:0 auto;
+	}
+		
+.BackButton:hover{
+    background-position: 0 0;
+}
+
+.BackButton.abs{
+	position:absolute;
+    bottom: -50px;
+    left: 50%;
+    margin-left: -37px;
+}
+
+.searchdiv input{
+    width:100%;
+    background-color: black;
+}
+
+.searchdiv center{
+margin:-2px 0px
+}
 
 /*{
 

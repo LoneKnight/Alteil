@@ -1,3 +1,80 @@
+
+(function(angular) {
+  'use strict';
+angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatController', function($scope, $resource) {
+	
+	$scope.Activity = $resource('http://apicache.apocoplay.com/ks/AlteilService.svc/GetCardPageID/Page/1/ItemsPerPage/3200/Filter/:type.Contains:search');
+	$scope.pack=[];
+	
+	console.log();
+	
+	$scope.searchName=GetURLParameter("Name");
+	$scope.searchExp=GetURLParameter("Expansion");
+	
+	
+	$scope.getSearch=function(filter,search){
+		window.history.pushState('', 'Title', 'cards.apocoplay.com?'+filter+'='+search);
+		$scope.pack=$scope.Activity.query(
+		{search:'("'+search+'")',
+		type:filter}, 
+		function(){
+				$scope.pager();
+			}
+		);
+	}
+
+	if($scope.searchName!=undefined){$scope.getSearch("Name",$scope.searchName)}
+	if($scope.searchExp!=undefined){$scope.getSearch("Expansion",$scope.searchExp)}
+	if($scope.searchName==undefined && $scope.searchExp==undefined){$scope.getSearch("Name","")}
+
+	
+	
+	
+	
+	$scope.pager=function(){
+	$scope.pages = [];
+	var size = 10;
+	while ($scope.pack.length > 0)
+    $scope.pages.push($scope.pack.splice(0, size));
+	}
+	
+	
+	$scope.leftPad=function(number, targetLength) {
+		var output = number + '';
+		while (output.length < targetLength) {
+			output = '0' + output;
+		}
+		return output;
+	}
+
+	$scope.selectCard=function(card){selectCard(card);}
+	
+	
+	$scope.randomCard=function(){
+			selector=Math.floor(Math.random()*pack.length);
+			$scope.selectCard(selector);
+	}
+	
+	
+	
+	
+});
+})(window.angular);
+
+function GetURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
 function movePointer(x)
 {
 $("#cardPointer").show();
