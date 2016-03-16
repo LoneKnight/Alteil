@@ -3,39 +3,48 @@
   'use strict';
 angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatController', function($scope, $resource) {
 	
-	$scope.Activity = $resource('http://apicache.apocoplay.com/ks/AlteilService.svc/GetCardPageID/Page/1/ItemsPerPage/3200/Filter/:type.Contains:search');
+	$scope.Activity = $resource('http://apicache.apocoplay.com/ks/AlteilService.svc/GetCardPageID/Page/1/ItemsPerPage/3200/Filter/!Expansion.contains("Event Cards") && !Expansion.contains("The Beginning"):search');
 	$scope.pack=[];
 	
 	console.log();
 	
-	$scope.searchName=GetURLParameter("Name");
-	$scope.searchExp=GetURLParameter("Expansion");
+	$scope.params=["Name","Expansion"];
+	$scope.search=[];
 	
+	for(var i=0;i<$scope.params.length;i++){
+		$scope.search[i]=GetURLParameter($scope.params[i]);
+	}
+	console.log($scope.search);
 	
-	$scope.getSearch=function(filter,search){
-		window.history.pushState('', 'Title', 'cards.apocoplay.com?'+filter+'='+search);
+	$scope.getSearch=function(search){
+		console.log(search);
+		var query=[];
+		var pushState=[];
+		var i;
+		for(i=0;i<$scope.params.length;i++){
+		if(search[i]!=undefined && search[i]!=""){
+			search[i]=search[i].replace(/%20/g," ");
+			query[i]=" && "+$scope.params[i]+'.contains("'+search[i]+'")';
+			pushState[i]=$scope.params[i]+"="+search[i];
+		}
+		}
+		window.history.pushState('', 'Title', '?'+pushState.join("&"));
 		$scope.pack=$scope.Activity.query(
-		{search:'("'+search+'")',
-		type:filter}, 
+		{search:query.join("")}, 
 		function(){
 				$scope.pager();
 			}
 		);
 	}
 
-	if($scope.searchName!=undefined){$scope.getSearch("Name",$scope.searchName)}
-	if($scope.searchExp!=undefined){$scope.getSearch("Expansion",$scope.searchExp)}
-	if($scope.searchName==undefined && $scope.searchExp==undefined){$scope.getSearch("Name","")}
+	$scope.getSearch($scope.search);
 
-	
-	
-	
-	
 	$scope.pager=function(){
 	$scope.pages = [];
 	var size = 10;
 	while ($scope.pack.length > 0)
     $scope.pages.push($scope.pack.splice(0, size));
+	selectCard(0);
 	}
 	
 	
