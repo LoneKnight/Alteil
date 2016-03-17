@@ -14,7 +14,8 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 	$scope.search=[];
 	
 	for(var i=0;i<$scope.params.length;i++){
-		$scope.search[i]=GetURLParameter($scope.params[i]);
+		$scope.search[i]=GetURLParameter($scope.params[i]) || "";
+		
 	}
 	console.log($scope.search);
 	

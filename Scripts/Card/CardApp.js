@@ -68,7 +68,7 @@ CardController = function ($scope, $resource) {
         MartialArtist: 'Fighters who excel in personal combat, either unarmed or using weapons that serve as extensions of their limbs, like the staff',
         Rarity: 'Stars represent a card\'s rarity. More stars indicate a larger rarity. '
     };
-    $scope.Activity = $resource('http://api.apocoplay.com/ks/AlteilService.svc/GetCardById/:cardID', {
+    $scope.Activity = $resource('http://apicache.apocoplay.com/ks/AlteilService.svc/GetCardById/:cardID', {
         get: {
             method: 'JSONP',
         },
@@ -86,8 +86,7 @@ CardController = function ($scope, $resource) {
     $scope.getRarity = function () {
         var rarityArray = [];
         if ($scope.card) {
-            var stars = ($scope.card.CardSetRarity.split("?").length - 1);
-            for (i = 0; i < stars; i++) {
+            for (i = 0; i < $scope.card.RarityValue; i++) {
                 rarityArray.push("?");
             }
         }

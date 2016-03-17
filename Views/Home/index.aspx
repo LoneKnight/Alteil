@@ -68,7 +68,7 @@ pointer=0;
  <div class="carousel-inner">
 
   <div ng-repeat="page in pages" class="item {{(($first)?'active':' ')}}" style="background-color: black;{{((true)?' ':' display:none')}}" ng-init="outerIndex = $index">
-    <img ng-repeat="card in page" id="card{{cardsIndex}}" class="lazy-load {{((selector==cardsIndex)?'selected':' ')}}" src="https://alteil-login.apocoplay.com/cardDB/card/{{leftPad(card,4)}}.jpg" ng-click="selectCard(cardsIndex)" ng-init="cardsIndex = outerIndex*10+$index">
+    <img ng-repeat="card in page" id="card{{cardsIndex}}" class="lazy-load {{((selector==cardsIndex)?'selected':' ')}}" src="http://media.apocoplay.com/dashboardCards/{{leftPad(card,4)}}.jpg" ng-click="selectCard(cardsIndex)" ng-init="cardsIndex = outerIndex*10+$index">
   </div>
  </div>
 

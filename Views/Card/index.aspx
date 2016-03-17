@@ -34,6 +34,7 @@
                 <div style="background: none repeat 0 0 transparent; border: 0 none; font-size: 15px; margin: 0; outline: 0 none; padding: 0; padding-left: 4px; vertical-align: baseline;" title="{{ToolTips.Rarity}}" ng-repeat="rarity in Rarity">
                     <div style="float: left;" class="cardSprite cardSprite-star"></div>
                 </div>
+				<span ng-if="card.Rarity=='EX'">EX</span>
             </div>
         </div>
 
@@ -142,7 +143,7 @@
                 <div class="textnew1" style="clear: both; width: 387px; text-align: right;">
                 </div>
                 <div ng-repeat="skill in Skills" ng-show="skill" ng-class="skill.Type == 'Soul' &&  SoulCardStyle">
-                    <div ng-class="skill.Type != 'Soul' &&  PlayCardStyle">
+                    <div ng-class="PlayCardStyle">
                         <div class="paddedTop cardSprite cardSprite-Skill-{{card.Sphere}}" style="clear: both; padding-left: 8px;">
                             <div title="{{getToolTip(skill.Type)}}" class="cardSprite cardSprite-Skill-{{skill.Type}} skillTableWidth" style="float: left; margin-top: 2px;"></div>
                             <div class="cardSkillName glow" style="float: left; vertical-align: middle; text-transform: uppercase; padding-left: 6px; padding-top: 2px;">
