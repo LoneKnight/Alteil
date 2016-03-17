@@ -8,6 +8,8 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 	
 	console.log();
 	
+	$scope.selector=0;
+	
 	$scope.params=["Name","Expansion"];
 	$scope.search=[];
 	
@@ -40,11 +42,13 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 	$scope.getSearch($scope.search);
 
 	$scope.pager=function(){
-	$scope.pages = [];
-	var size = 10;
-	while ($scope.pack.length > 0)
-    $scope.pages.push($scope.pack.splice(0, size));
-	selectCard(0);
+		$scope.pages = [];
+		var size = 10;
+		for (var i=0; i<$scope.pack.length;i+=size){
+					console.log([i,size]);
+		$scope.pages.push($scope.pack.slice(i, i+size));
+		}
+		selectCard(0);
 	}
 	
 	
@@ -60,13 +64,65 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 	
 	
 	$scope.randomCard=function(){
-			selector=Math.floor(Math.random()*pack.length);
-			$scope.selectCard(selector);
+			$scope.selector=Math.floor(Math.random()*$scope.pack.length);
+			$scope.selectCard($scope.selector);
+	}
+
+	$scope.loadCard=function(ID){
+				document.getElementById('mainframe').contentWindow.angular.element("body").scope().loadCard($scope.pack[ID]);
 	}
 	
-	
-	
-	
+	function movePointer(x){
+		$("#cardPointer").show();
+		$("#cardPointer").animate({left:((10*x)+5)+'%'});
+	}
+
+
+	$scope.pointerPage=function(x){
+		pointer=pointer+x;
+		if(pointer>0){movePointer(10);}
+		if(pointer<0){movePointer(-1);}
+		if(pointer==0){movePointer(selector%10);}
+	}
+
+	function nextCard(){
+		if(++$scope.selector>$scope.pack.length-1){$scope.selector=0;}
+		$('.carousel').carousel(Math.floor($scope.selector/10));
+		movePointer($scope.selector%10);
+		$scope.loadCard($scope.selector);
+	}
+
+	function prevCard(){
+		if(--$scope.selector<0){$scope.selector=$scope.pack.length-1;}
+		$('.carousel').carousel(Math.floor($scope.selector/10));
+		movePointer($scope.selector%10);
+		$scope.loadCard($scope.selector);
+	}
+
+	function selectCard(x){
+		$scope.selector=x;
+		$('.carousel').carousel(Math.floor($scope.selector/10));
+		movePointer($scope.selector%10);
+		pointer=0;
+		$scope.loadCard($scope.selector);
+	}
+
+	function randomCard(){
+		$scope.selector=Math.floor(Math.random()*$scope.pack.length);
+		$('.carousel').carousel(Math.floor($scope.selector/10));
+		$randomImages=$('#myCarousel .carousel-inner').find(".item").eq(Math.floor($scope.selector/10)).find("img");
+		
+		$randomImages.each(function(){
+			if($(this).hasClass('lazy-load')){
+				$(this).attr("src",$(this).data("lazy-load-src"));
+				$(this).removeClass('lazy-load');
+			}
+		});		
+		movePointer($scope.selector%10);
+		pointer=0;
+		$scope.loadCard(selector);
+	}
+
 });
 })(window.angular);
 
@@ -82,70 +138,6 @@ function GetURLParameter(sParam)
             return sParameterName[1];
         }
     }
-}
-
-function movePointer(x)
-{
-$("#cardPointer").show();
-$("#cardPointer").animate({left:((10*x)+5)+'%'});
-}
-
-
-function pointerPage(x){
-pointer=pointer+x;
-if(pointer>0){movePointer(10);}
-if(pointer<0){movePointer(-1);}
-if(pointer==0){movePointer(selector%10);}
-}
-
-function nextCard()
-{
-document.getElementById("card"+selector).style.opacity="";
-if(++selector>pack.length-1){selector=0;}
-document.getElementById('mainframe').contentWindow.angular.element("body").scope().loadCard(pack[selector]);
-$('.carousel').carousel(Math.floor(selector/10));
-document.getElementById("card"+selector).style.opacity="1.0";
-movePointer(selector%10);
-}
-
-function prevCard()
-{
-document.getElementById("card"+selector).style.opacity="";
-if(--selector<0){selector=pack.length-1;}
-document.getElementById('mainframe').contentWindow.angular.element("body").scope().loadCard(pack[selector]);
-$('.carousel').carousel(Math.floor(selector/10));
-document.getElementById("card"+selector).style.opacity="1.0";
-movePointer(selector%10);
-}
-
-function selectCard(x)
-{
-document.getElementById("card"+selector).style.opacity="";
-selector=x;
-document.getElementById('mainframe').contentWindow.angular.element("body").scope().loadCard(pack[selector]);
-$('.carousel').carousel(Math.floor(selector/10));
-document.getElementById("card"+selector).style.opacity="1.0";
-movePointer(selector%10);
-pointer=0;
-}
-
-function randomCard()
-{
-document.getElementById("card"+selector).style.opacity="";
-selector=Math.floor(Math.random()*pack.length);
-document.getElementById('mainframe').contentWindow.angular.element("body").scope().loadCard(pack[selector]);
-$('.carousel').carousel(Math.floor(selector/10));
-$randomImages=$('#myCarousel .carousel-inner').find(".item").eq(Math.floor(selector/10)).find("img");
-$randomImages.each(function(){
-        if($(this).hasClass('lazy-load')){
-	$(this).attr("src",$(this).data("lazy-load-src"));
-	$(this).removeClass('lazy-load');
-	}
-	});
-
-document.getElementById("card"+selector).style.opacity="1.0";
-movePointer(selector%10);
-pointer=0;
 }
 
 $(document).ready(function() {

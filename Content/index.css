@@ -15,6 +15,10 @@ overflow:hidden;
     left: 5%;
 }
 
+.expansion{
+width:100%;
+background-color:black;
+}
 
 .BackButton {
     width: 74px;
@@ -146,7 +150,7 @@ float:left;
 opacity:0.7;
 }
 
-img:hover
+img:hover, img.selected
 {
 cursor:pointer;
 opacity:1.0;

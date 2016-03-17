@@ -34,6 +34,7 @@ pointer=0;
 	Card name:
 	<input type="text" ng-model="search[0]">
 	<select class="expansion" ng-model="search[1]">
+		<option value="">All</option>
 		<option value="Basic Set">Basic Set</option>
 		<option value="Dragon Emperors Revive">Dragon Emperors Revive</option>
 		<option value="Wrath of the Four Gods">Wrath of the Four Gods</option>
@@ -66,14 +67,14 @@ pointer=0;
 <center><div class="border-top"></div></center>
  <div class="carousel-inner">
 
-  <div ng-repeat="page in pages" class="item {{(($first)?'active':' ')}}" style="background-color: black;{{((true)?' ':' display:none')}}">
-    <img ng-repeat="card in page" id="card{{card}}" class="lazy-load" src="https://alteil-login.apocoplay.com/cardDB/card/{{leftPad(card,4)}}.jpg" ng-click="selectCard(card)">
+  <div ng-repeat="page in pages" class="item {{(($first)?'active':' ')}}" style="background-color: black;{{((true)?' ':' display:none')}}" ng-init="outerIndex = $index">
+    <img ng-repeat="card in page" id="card{{cardsIndex}}" class="lazy-load {{((selector==cardsIndex)?'selected':' ')}}" src="https://alteil-login.apocoplay.com/cardDB/card/{{leftPad(card,4)}}.jpg" ng-click="selectCard(cardsIndex)" ng-init="cardsIndex = outerIndex*10+$index">
   </div>
  </div>
 
-   <a class="left carousel-control" href="#myCarousel" data-slide="prev" onclick="pointerPage(1)">&lsaquo;</a>
+   <a class="left carousel-control" href="#myCarousel" data-slide="prev" ng-click="pointerPage(1)">&lsaquo;</a>
 
-   <a class="right carousel-control" href="#myCarousel" data-slide="next" onclick="pointerPage(-1)">&rsaquo;</a>
+   <a class="right carousel-control" href="#myCarousel" data-slide="next" ng-click="pointerPage(-1)">&rsaquo;</a>
 
 <center style="margin:-7px;"><div class="border-bot"></div></center>
 </div>
