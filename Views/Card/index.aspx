@@ -34,7 +34,7 @@
                 <div style="background: none repeat 0 0 transparent; border: 0 none; font-size: 15px; margin: 0; outline: 0 none; padding: 0; padding-left: 4px; vertical-align: baseline;" title="{{ToolTips.Rarity}}" ng-repeat="rarity in Rarity">
                     <div style="float: left;" class="cardSprite cardSprite-star"></div>
                 </div>
-				<span ng-if="card.Rarity=='EX'">EX</span>
+				<span ng-show="card.Rarity=='EX'">{{card.Rarity}}</span>
             </div>
         </div>
 

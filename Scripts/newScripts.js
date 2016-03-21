@@ -12,26 +12,36 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 	
 	$scope.params=["Name","Expansion"];
 	$scope.search=[];
+	$scope.pages=[];
+	
+	
 	
 	for(var i=0;i<$scope.params.length;i++){
 		$scope.search[i]=GetURLParameter($scope.params[i]) || "";
 		
 	}
-	console.log($scope.search);
+	
+	$scope.sendSearch=function(search){
+		var pushState=[];
+		for(i=0;i<$scope.params.length;i++){
+			if(search[i]!=undefined && search[i]!=""){
+				search[i]=search[i].replace(/%20/g," ");
+				pushState[i]=$scope.params[i]+"="+search[i];
+			}
+		}
+		console.log('?'+pushState.join("&"));
+		window.location.href='?'+pushState.join("&");
+	}
 	
 	$scope.getSearch=function(search){
-		console.log(search);
 		var query=[];
-		var pushState=[];
 		var i;
 		for(i=0;i<$scope.params.length;i++){
 		if(search[i]!=undefined && search[i]!=""){
 			search[i]=search[i].replace(/%20/g," ");
 			query[i]=" && "+$scope.params[i]+'.contains("'+search[i]+'")';
-			pushState[i]=$scope.params[i]+"="+search[i];
 		}
 		}
-		window.history.pushState('', 'Title', '?'+pushState.join("&"));
 		$scope.pack=$scope.Activity.query(
 		{search:query.join("")}, 
 		function(){
@@ -46,10 +56,9 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 		$scope.pages = [];
 		var size = 10;
 		for (var i=0; i<$scope.pack.length;i+=size){
-					console.log([i,size]);
 		$scope.pages.push($scope.pack.slice(i, i+size));
 		}
-		selectCard(0);
+		$scope.selectCard(0);
 	}
 	
 	
@@ -59,10 +68,7 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 			output = '0' + output;
 		}
 		return output;
-	}
-
-	$scope.selectCard=function(card){selectCard(card);}
-	
+	}	
 	
 	$scope.randomCard=function(){
 			$scope.selector=Math.floor(Math.random()*$scope.pack.length);
@@ -86,21 +92,21 @@ angular.module('ngRepeat', ['ngAnimate','ngResource']).controller('repeatControl
 		if(pointer==0){movePointer(selector%10);}
 	}
 
-	function nextCard(){
+	$scope.nextCard=function(){
 		if(++$scope.selector>$scope.pack.length-1){$scope.selector=0;}
 		$('.carousel').carousel(Math.floor($scope.selector/10));
 		movePointer($scope.selector%10);
 		$scope.loadCard($scope.selector);
 	}
 
-	function prevCard(){
+	$scope.prevCard=function(){
 		if(--$scope.selector<0){$scope.selector=$scope.pack.length-1;}
 		$('.carousel').carousel(Math.floor($scope.selector/10));
 		movePointer($scope.selector%10);
 		$scope.loadCard($scope.selector);
 	}
 
-	function selectCard(x){
+	$scope.selectCard=function(x){
 		$scope.selector=x;
 		$('.carousel').carousel(Math.floor($scope.selector/10));
 		movePointer($scope.selector%10);
