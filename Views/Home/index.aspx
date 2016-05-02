@@ -57,7 +57,7 @@ pointer=0;
 
 <div id="framediv">
 <a id="topL" class="topcontrol" ng-click="prevCard()" ng-hide="pages.length==0"></a>
-<iframe id="mainframe" src="http://knight.apocoplay.com/Card?id=0"></iframe>
+<iframe id="mainframe" src="/Card?id=0"></iframe>
 <a id="topR" class="topcontrol" ng-click="nextCard()" ng-hide="pages.length==0"></a>
 <a id="randomButton" ng-click="randomCard()" ng-hide="pages.length==0"></a>
 </div>
